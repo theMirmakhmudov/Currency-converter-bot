@@ -1,3 +1,24 @@
+import asyncio
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.enums import ParseMode
+from aiogram.filters import Command
+from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.context import FSMContext
+import requests
+
+from config import TOKEN
+
+dp = Dispatcher()
+
+
+class Form(StatesGroup):
+    currency1 = State()  # fromCurrency
+    currency2 = State()  # toCurrency
+    amount = State()  # qiymat  # noqa
+    finish = State()  # finish
+
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message, state: FSMContext):
     await message.answer(f"<b>Assalomu Aleykum {message.from_user.mention_html()}</b>")
