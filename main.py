@@ -6,6 +6,7 @@ from aiogram.filters import Command
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 import requests
+from valyutalar import currencies
 
 from config import TOKEN
 
@@ -20,12 +21,11 @@ class Form(StatesGroup):
 
 
 @dp.message(Command("start"))
-async def cmd_start(message: types.Message):
+async def cmd_start(message: types.Message, state: FSMContext):
     await message.answer(f"Assalomu Aleykum botimizga xush kelibsiz, {message.from_user.mention_html()}")
 
-
-@dp.message(Command("converter"))
-async def cmd_converter(message: types.Message, state: FSMContext):
+    # @dp.message(Command("converter"))
+    # async def cmd_converter(message: types.Message, state: FSMContext):
     await state.set_state(Form.currency1)
     await message.answer("Qaysi valyutadan convertatsiya qilmoqchisiz ?")
 
@@ -60,9 +60,10 @@ async def amount(message: types.Message, state: FSMContext, bot: Bot):
     querystring = {"amount": f"{amount}", "fromCurrency": f"{currency1}", "toCurrency": f"{currency2}"}
 
     headers = {
-        "X-RapidAPI-Key": "47e6e83752msh94207fba448cf4cp16da37jsn1790f629b32d",
+        "X-RapidAPI-Key": "2c9e3a2d0dmshd539729a89c644dp170804jsnc6b30542e9e5",
         "X-RapidAPI-Host": "fast-currency-convertor.p.rapidapi.com"
     }
+
 
     response = requests.get(url, headers=headers, params=querystring)
     result = response.json().get("value")
@@ -73,7 +74,7 @@ Qaysi valyutga: {currency2}
 Miqdori: {amount}
 Natija: {result}
     """)
-    print(response.json())
+
 
 
 async def main() -> None:
